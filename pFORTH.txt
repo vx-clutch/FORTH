@@ -1,8 +1,0 @@
-                        8"""" 8"""88 8"""8 ""8"" 8   8 
-                  eeeee 8     8    8 8   8   8   8   8 
-                  8   8 8eeee 8    8 8eee8e  8e  8eee8 
-                  8eee8 88    8    8 88   8  88  88  8 
-                  88    88    8    8 88   8  88  88  8 
-                  88    88    8eeee8 88   8  88  88  8 
-                        pFORTH interpreter 1.0
-                        Programming Manual

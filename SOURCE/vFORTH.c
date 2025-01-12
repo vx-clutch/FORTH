@@ -4,44 +4,42 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-#define perror(x) printf("%serror:%s %s", "\033[;91m", "\033[0m", x); exit(0)
+#define PRIMARY "\x1b[?1049l"
+#define ALTERNATE "\x1b[?1049h"
+#define HOME "\033[H"
 
-int
-main(int argc, char **argv)
-{
-  if (argc < 2)
-    perror("no input files.");
+char *shell(const char *prompt) {
+  char buf[100];
 
-  FILE *fp;
-  char *buffer;
-  long file_size;
-  char *path = argv[1];
-
-  fp = fopen(path, "r");
-
-  if (fp == NULL)
-    perror("no such file or directory");
-
-  fseek(fp, 0, SEEK_END);
-  file_size = ftell(fp);
-  rewind(fp);
-
-  buffer = (char *)malloc(file_size + 1);
-  if (buffer == NULL) {
-    fclose(fp);
-    perror("error allocating memory.");
+  printf("Enter a string: ");
+  if (fgets(buf, sizeof(buf), stdin)) {
+    size_t length = strlen(buf);
+    if (length > 0 && buf[length - 1] == '\n') {
+      buf[length - 1] = '\0';
+    }
+    printf("You entered: %s\n", buf);
+  } else {
+    exit(EXIT_FAILURE);
   }
 
-  int elem = fread(buffer, 1, file_size, fp);
-  if (elem != file_size)
-      perror("");
+  return 0;
 }
 
-/* pFORTH is a simple and extensible compiler.
+int main(int argc, char **argv) {
+  printf(ALTERNATE);
+  fflush(stdout);
+  printf(HOME);
+  printf(PRIMARY);
+  fflush(stdout);
+  return EXIT_SUCCESS;
+}
+
+/* vFORTH is a FORTH repl
  * Copyright (C) 2024 vx-clutch
  *
- * The file is part of pFORTH.
+ * The file is part of vFORTH.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -67,4 +65,3 @@ main(int argc, char **argv)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
