@@ -1,3 +1,5 @@
 # vFORTH
 
-vFORTH is a dialet of a subset of the FORTH language.
+vFORTH is a dialet of FORTH language.
+
+See vFORTH.TXT for more information
