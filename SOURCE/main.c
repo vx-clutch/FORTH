@@ -12,28 +12,12 @@
 
 const int buf_max = 1024;
 
-char *shell() {
-  char *buf = malloc(1024 * sizeof(char));
-  const char quit[1024] = "quit";
-  printf("FTH=>");
-  if (fgets(buf, sizeof(buf), stdin)) {
-    if (strcmp(quit, buf)) {
-      printf("Are you sure [Y/n] ");
-      if (getchar() != 'n') {
-        printf(PRIMARY);
-        fflush(stdout);
-        exit(0);
-      }
-    }
-  } else {
-    exit(EXIT_FAILURE);
-  }
-  return 0;
-}
+char *shell();
+char *eval(char *expr);
 
-char *eval(char *expr) { return expr; }
-
-int main(int argc, char **argv) {
+int
+main(int argc, char **argv)
+{
   printf(ALTERNATE);
   fflush(stdout);
   printf(HOME);
@@ -42,6 +26,38 @@ int main(int argc, char **argv) {
   printf(PRIMARY);
   fflush(stdout);
   return EXIT_SUCCESS;
+}
+
+char *
+shell()
+{
+  char *buf = malloc(1024 * sizeof(char));
+  const char quit[1024] = "quit";
+  printf("FTH=>");
+  if (fgets(buf, sizeof(buf), stdin))
+  {
+    if (strcmp(quit, buf))
+    {
+      printf("Are you sure [Y/n] ");
+      if (getchar() != 'n')
+      {
+        printf(PRIMARY);
+        fflush(stdout);
+        exit(0);
+      }
+    }
+  }
+  else
+  {
+    exit(EXIT_FAILURE);
+  }
+  return 0;
+}
+
+char *
+eval(char *expr)
+{
+  return expr;
 }
 
 /* vFORTH is a FORTH repl
