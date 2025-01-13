@@ -17,23 +17,21 @@ char *shell() {
   const char quit[1024] = "quit";
   printf("FTH=>");
   if (fgets(buf, sizeof(buf), stdin)) {
-	  if (strcmp(quit, buf)) {
-		  printf("Are you sure [Y/n]=>");
-		  if (getchar() != 'n') {
-		    printf(PRIMARY);
-		    fflush(stdout);
-		    exit(0);
-		  }
+    if (strcmp(quit, buf)) {
+      printf("Are you sure [Y/n] ");
+      if (getchar() != 'n') {
+        printf(PRIMARY);
+        fflush(stdout);
+        exit(0);
       }
-    } else {
+    }
+  } else {
     exit(EXIT_FAILURE);
   }
   return 0;
 }
 
-char *eval(char *expr) {
-	return expr;
-}
+char *eval(char *expr) { return expr; }
 
 int main(int argc, char **argv) {
   printf(ALTERNATE);

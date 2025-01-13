@@ -26,11 +26,11 @@ this case, REPL's.
 
 1.1.2 Language Specification
 
-The vFORTH language is a dialect of the FORTH language, but we will refer to it as FORTH. The main language
-directives are placing items on the stack, operating on the stack, and
-defining words. An item is any value on the stack . The stack is a
-first in last out data structure. Any operations done to the stack are done
-to the top item(s) of the stack, subsequent items cannot be accessed.
-
-Items can be placed on the stack in a few ways. The most basic way is to
-just any number ℤ into the REPL.
+The vFORTH language is a dialect of the FORTH language, but we will refer to it
+as FORTH for the purposes of this repository. The main language directives are
+placing items on the stack, operating on the stack, and defining words. An item
+is any value on the stack. The stack is a first in last out data structure. Any
+operations done to the stack are done to the top item(s) of the stack,
+subsequent items cannot be accessed. A word is a user defined instruction that
+can be called in the program. A word is defined with the : syntax, it is then
+terminated with a ;. It can then called as any regular builtin. 
