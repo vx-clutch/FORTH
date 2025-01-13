@@ -10,34 +10,44 @@
 #define ALTERNATE "\x1b[?1049h"
 #define HOME "\033[H"
 
-char *shell(const char *prompt) {
-  char buf[100];
+const int buf_max = 1024;
 
-  printf("Enter a string: ");
+char *shell() {
+  char *buf = malloc(1024 * sizeof(char));
+  const char quit[1024] = "quit";
+  printf("FTH=>");
   if (fgets(buf, sizeof(buf), stdin)) {
-    size_t length = strlen(buf);
-    if (length > 0 && buf[length - 1] == '\n') {
-      buf[length - 1] = '\0';
-    }
-    printf("You entered: %s\n", buf);
-  } else {
+	  if (strcmp(quit, buf)) {
+		  printf("Are you sure [Y/n]=>");
+		  if (getchar() != 'n') {
+		    printf(PRIMARY);
+		    fflush(stdout);
+		    exit(0);
+		  }
+      }
+    } else {
     exit(EXIT_FAILURE);
   }
-
   return 0;
+}
+
+char *eval(char *expr) {
+	return expr;
 }
 
 int main(int argc, char **argv) {
   printf(ALTERNATE);
   fflush(stdout);
   printf(HOME);
+  while (1)
+    shell();
   printf(PRIMARY);
   fflush(stdout);
   return EXIT_SUCCESS;
 }
 
 /* vFORTH is a FORTH repl
- * Copyright (C) 2024 vx-clutch
+ * Copyright (C) 2025 vx-clutch
  *
  * The file is part of vFORTH.
  *
