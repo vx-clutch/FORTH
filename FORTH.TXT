@@ -3,7 +3,7 @@
                         8    8b  d8 8wwK'   8   8   8 
                         8    `Y88P' 8  Yb   8   8   8 
 
-                                 vFORTH alpha  
+                                 FORTH alpha  
                              Programmer's Manual  
 
 
@@ -16,7 +16,7 @@ Chapter 1  Introduction
 
 Chapter 1 Introduction
 
-This is a general introduction to the vFORTH REPL.
+This is a general introduction to the FORTH REPL.
  
 1.1 About
 
@@ -26,7 +26,7 @@ this case, REPL's.
 
 1.1.2 Language Specification
 
-The vFORTH language is a dialect of the FORTH language. The main language
+The vFORTH language is a dialect of the FORTH language, but we will refer to it as FORTH. The main language
 directives are placing items on the stack, operating on the stack, and
 defining words. An item is any value on the stack . The stack is a
 first in last out data structure. Any operations done to the stack are done
