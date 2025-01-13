@@ -1,0 +1,36 @@
+                        8888 .d88b. 888b. 88888 8   8 
+                        8www 8P  Y8 8  .8   8   8www8 
+                        8    8b  d8 8wwK'   8   8   8 
+                        8    `Y88P' 8  Yb   8   8   8 
+
+                                 vFORTH alpha  
+                             Programmer's Manual  
+
+
+Table of Contents
+
+Chapter 1  Introduction
+
+  1.1   About
+  1.1.2 Language Specification
+
+Chapter 1 Introduction
+
+This is a general introduction to the vFORTH REPL.
+ 
+1.1 About
+
+I built this implementation of the FORTH programming language becuase it is the
+thing you build while learning how to create interpreters, compilers, and in
+this case, REPL's.
+
+1.1.2 Language Specification
+
+The vFORTH language is a dialect of the FORTH language. The main language
+directives are placing items on the stack, operating on the stack, and
+defining words. An item is any value on the stack . The stack is a
+first in last out data structure. Any operations done to the stack are done
+to the top item(s) of the stack, subsequent items cannot be accessed.
+
+Items can be placed on the stack in a few ways. The most basic way is to
+just any number ℤ into the repl.
