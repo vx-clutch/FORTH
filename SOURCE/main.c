@@ -11,6 +11,8 @@
 #define ALTERNATE "\x1b[?1049h"
 #define HOME "\033[H"
 
+#define MAXBUF 1024
+
 int stack[64];
 int sp = 0; // stack pointer
 int rhs;
@@ -26,14 +28,14 @@ main(int argc, char **argv) {
   fflush(stdout);
   printf(HOME);
   while (1) {
-    char *input_buffer = malloc(1024 * sizeof(char));
+    char *input_buffer = malloc(MAXBUF * sizeof(char));
     if (input_buffer == NULL) {
       fprintf(stderr, "Memory allocation failed\n");
       exit(1);
     }
 
     printf("FTH=> ");
-    if (fgets(input_buffer, 1024, stdin) == NULL) {
+    if (fgets(input_buffer, MAXBUF, stdin) == NULL) {
       free(input_buffer);
       continue;
     }
@@ -63,6 +65,7 @@ main(int argc, char **argv) {
         continue;
       }
     }
+    printf("%s", eval(input_buffer));
     free(input_buffer);
   }
   printf(PRIMARY);
@@ -76,9 +79,20 @@ pop() {
   return top;
 }
 
+typedef struct {
+  char *type;
+  char *value;
+} token;
+
 char *
-eval(char *expr) {
-  return expr;
+eval(char expr[MAXBUF]) {
+  char *output_buffer = malloc(MAXBUF * sizeof(char));
+  /* lexer */
+  token instructions[MAXBUF];
+  for (int i = 0; i < sizeof(output_buffer); i++) {
+    char ch = expr[i];
+  }
+  return output_buffer;
 }
 
 void help() {
