@@ -27,18 +27,11 @@ main(int argc, char **argv)
   printf(HOME);
 
   while (1) {
-    char *input = shell();
-    if (strcmp(input, "quit") != 0) {
-      printf("Are you sure? [Y/n] ");
-      char ch = getchar();
-      if (ch == '\n' || ch == 'y') {
-        printf(PRIMARY);
-        fflush(stdout);
-        exit(0);
-      }
-    }
+	printf("FTH=>");
+	getchar();
   }
-
+  printf(PRIMARY);
+  fflush(stdout);
 }
 
 char *
