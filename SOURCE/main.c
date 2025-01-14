@@ -10,10 +10,22 @@
 #define ALTERNATE "\x1b[?1049h"
 #define HOME "\033[H"
 
-const int buf_max = 1024;
+int stack[64];
+int sp = 0; // stack pointer
+int rhs;
+int lhs;
 
 char *shell();
-char *eval(char *expr);
+char *eval(char *);
+int pop();
+
+void print_stack() {
+  putchar('[');
+  for (int i = 0; i < sizeof(stack); i++) {
+    printf("%d, ", stack[i]);
+  }
+  printf("]\n");
+}
 
 int
 main(int argc, char **argv)
@@ -21,37 +33,45 @@ main(int argc, char **argv)
   printf(ALTERNATE);
   fflush(stdout);
   printf(HOME);
-  while (1)
-    shell();
-  printf(PRIMARY);
-  fflush(stdout);
-  return EXIT_SUCCESS;
+  shell();
 }
 
 char *
 shell()
 {
   char *buf = malloc(1024 * sizeof(char));
-  const char quit[1024] = "quit";
+  char *quit = malloc(1024 * sizeof(char));
+  strcpy(quit, "quit");
   printf("FTH=>");
-  if (fgets(buf, sizeof(buf), stdin))
+  
+  if (fgets(buf, 1024, stdin))
   {
-    if (strcmp(quit, buf))
+    buf[strcspn(buf, "\n")] = '\0';
+    if (strcmp(quit, buf) != 0)
     {
       printf("Are you sure [Y/n] ");
-      if (getchar() != 'n')
+      char ch = getchar();
+      if (ch == '\n' || ch != 'n')
       {
         printf(PRIMARY);
         fflush(stdout);
         exit(0);
       }
     }
+    shell();
   }
   else
   {
     exit(EXIT_FAILURE);
   }
+  
   return 0;
+}
+
+int pop() {
+  int top = stack[sp];
+  sp--;
+  return top;
 }
 
 char *
