@@ -1,6 +1,7 @@
-// Copyright (C) 2025 vx-clutch ( owestness@gmail.com )
+// Copyright (C) 2025 vx-clutch (owestness@gmail.com)
 // See end of file for extended copyright information.
 
+#include <ctype.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,44 +16,74 @@ int sp = 0; // stack pointer
 int rhs;
 int lhs;
 
-char *shell();
 char *eval(char *);
 int pop();
+void help();
 
 int
-main(int argc, char **argv)
-{
+main(int argc, char **argv) {
   printf(ALTERNATE);
   fflush(stdout);
   printf(HOME);
-
   while (1) {
-	printf("FTH=>");
-	getchar();
+    char *input_buffer = malloc(1024 * sizeof(char));
+    if (input_buffer == NULL) {
+      fprintf(stderr, "Memory allocation failed\n");
+      exit(1);
+    }
+
+    printf("FTH=> ");
+    if (fgets(input_buffer, 1024, stdin) == NULL) {
+      free(input_buffer);
+      continue;
+    }
+
+    // Remove trailing newline
+    input_buffer[strcspn(input_buffer, "\n")] = '\0';
+
+    if (input_buffer[0] == '\0') {
+      free(input_buffer);
+      continue;
+    }
+
+    if (strcmp(input_buffer, "help") == 0) {
+      help();
+    }
+
+    if (strcmp(input_buffer, "quit") == 0) {
+      free(input_buffer);
+      printf("Are you sure? [Y/n] ");
+      char ch = getchar();
+      while (getchar() != '\n')
+        ; // Consume leftover input
+      ch = tolower(ch);
+      if (ch == 'y' || ch == '\n') {
+        break;
+      } else {
+        continue;
+      }
+    }
+    free(input_buffer);
   }
   printf(PRIMARY);
   fflush(stdout);
 }
 
-char *
-shell()
-{
-  char *input_buffer = malloc(1024 * sizeof(char));
-  printf("FTH=>");
-  scanf("%s", &input_buffer);
-  return input_buffer;
-}
-
-int pop() {
+int
+pop() {
   int top = stack[sp];
   sp--;
   return top;
 }
 
 char *
-eval(char *expr)
-{
+eval(char *expr) {
   return expr;
+}
+
+void help() {
+  printf("The help feature is not built yet.\n");
+  return;
 }
 
 /* vFORTH is a FORTH repl
@@ -79,8 +110,5 @@ eval(char *expr)
  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * INTERRUPTION) HO
  */
