@@ -19,53 +19,35 @@ char *shell();
 char *eval(char *);
 int pop();
 
-void print_stack() {
-  putchar('[');
-  for (int i = 0; i < sizeof(stack); i++) {
-    printf("%d, ", stack[i]);
-  }
-  printf("]\n");
-}
-
 int
 main(int argc, char **argv)
 {
   printf(ALTERNATE);
   fflush(stdout);
   printf(HOME);
-  shell();
-}
 
-char *
-shell()
-{
-  char *buf = malloc(1024 * sizeof(char));
-  char *quit = malloc(1024 * sizeof(char));
-  strcpy(quit, "quit");
-  printf("FTH=>");
-  
-  if (fgets(buf, 1024, stdin))
-  {
-    buf[strcspn(buf, "\n")] = '\0';
-    if (strcmp(quit, buf) != 0)
-    {
-      printf("Are you sure [Y/n] ");
+  while (1) {
+    char *input = shell();
+    if (strcmp(input, "quit") != 0) {
+      printf("Are you sure? [Y/n] ");
       char ch = getchar();
-      if (ch == '\n' || ch != 'n')
-      {
+      if (ch == '\n' || ch == 'y') {
         printf(PRIMARY);
         fflush(stdout);
         exit(0);
       }
     }
-    shell();
   }
-  else
-  {
-    exit(EXIT_FAILURE);
-  }
-  
-  return 0;
+
+}
+
+char *
+shell()
+{
+  char *input_buffer = malloc(1024 * sizeof(char));
+  printf("FTH=>");
+  scanf("%s", &input_buffer);
+  return input_buffer;
 }
 
 int pop() {
