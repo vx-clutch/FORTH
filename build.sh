@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
-gcc -o vforth SOURCE/main.c
+args=""
+
+for arg in "$@"; do
+  args+="$arg "
+done
+
+gcc -o vforth SOURCE/main.c $args
