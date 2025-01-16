@@ -13,6 +13,9 @@
 
 #define MAXBUF 1024
 
+/* utilty macro for comparisons with input_buffer */
+#define cmp(str) strcmp(input_buffer, str) == 0
+
 int stack[64];
 int sp = 0; // stack pointer
 int rhs;
@@ -48,11 +51,11 @@ main(int argc, char **argv) {
       continue;
     }
 
-    if (strcmp(input_buffer, "help") == 0) {
+    if (cmp("help")) {
       help();
     }
 
-    if (strcmp(input_buffer, "quit") == 0) {
+    if (cmp("quit")) {
       free(input_buffer);
       printf("Are you sure? [Y/n] ");
       char ch = getchar();
@@ -96,8 +99,19 @@ eval(char expr[MAXBUF]) {
 }
 
 void help() {
-  printf("The help feature is not built yet.\n");
-  return;
+  while (1) {
+    char *input_buffer = malloc(MAXBUF * sizeof(char));
+    if (fgets(input_buffer, MAXBUF, stdin) == NULL) {
+      free(input_buffer);
+      continue;
+    }
+    printf("help> ");
+    if (cmp("mod"))
+      printf("'mod' is the FORTH keyword for the modulus operation. The modulus operation takes the remainder of the top two items of the stack.");
+    if (cmp("quit"))
+      return;
+    free(input_buffer);
+  }
 }
 
 /* vFORTH is a FORTH repl
