@@ -11,12 +11,13 @@
 #define ALTERNATE "\x1b[?1049h"
 #define HOME "\033[H"
 
-#define MAXBUF 1024
+#define MAX_BUFFER 1024
 
 /* utilty macro for comparisons with input_buffer */
 #define cmp(str) strcmp(input_buffer, str) == 0
 
-int stack[64];
+#define STACK_SIZE 8
+int stack[STACK_SIZE];
 int sp = 0; // stack pointer
 int rhs;
 int lhs;
@@ -31,14 +32,14 @@ main(int argc, char **argv) {
   fflush(stdout);
   printf(HOME);
   while (1) {
-    char *input_buffer = malloc(MAXBUF * sizeof(char));
+    char *input_buffer = malloc(MAX_BUFFER * sizeof(char));
     if (input_buffer == NULL) {
       fprintf(stderr, "Memory allocation failed\n");
       exit(1);
     }
 
     printf("FTH=> ");
-    if (fgets(input_buffer, MAXBUF, stdin) == NULL) {
+    if (fgets(input_buffer, MAX_BUFFER, stdin) == NULL) {
       free(input_buffer);
       continue;
     }
@@ -62,13 +63,23 @@ main(int argc, char **argv) {
       while (getchar() != '\n')
         ; // Consume leftover input
       ch = tolower(ch);
-      if (ch == 'y' || ch == '\n') {
+      if (ch != 'n') {
         break;
       } else {
         continue;
       }
     }
-    printf("%s", eval(input_buffer));
+
+    if (cmp("ls")) {
+      free(input_buffer);
+      printf("[");
+      for (size_t i = 0; i < STACK_SIZE; i++) {
+        printf(" %d,", stack[i]);
+      }
+      printf("]\n");
+      continue;
+    }
+
     free(input_buffer);
   }
   printf(PRIMARY);
@@ -88,10 +99,10 @@ typedef struct {
 } token;
 
 char *
-eval(char expr[MAXBUF]) {
-  char *output_buffer = malloc(MAXBUF * sizeof(char));
+eval(char expr[MAX_BUFFER]) {
+  char *output_buffer = malloc(MAX_BUFFER * sizeof(char));
   /* lexer */
-  token instructions[MAXBUF];
+  token instructions[MAX_BUFFER];
   for (int i = 0; i < sizeof(output_buffer); i++) {
     char ch = expr[i];
   }
@@ -100,16 +111,35 @@ eval(char expr[MAXBUF]) {
 
 void help() {
   while (1) {
-    char *input_buffer = malloc(MAXBUF * sizeof(char));
-    if (fgets(input_buffer, MAXBUF, stdin) == NULL) {
+    char *input_buffer = malloc(MAX_BUFFER * sizeof(char));
+    if (input_buffer == NULL) {
+      fprintf(stderr, "Memory allocation failed\n");
+      exit(1);
+    }
+
+    printf("help> ");
+    if (fgets(input_buffer, MAX_BUFFER, stdin) == NULL) {
       free(input_buffer);
       continue;
     }
-    printf("help> ");
-    if (cmp("mod"))
-      printf("'mod' is the FORTH keyword for the modulus operation. The modulus operation takes the remainder of the top two items of the stack.");
-    if (cmp("quit"))
-      return;
+
+    // Remove trailing newline
+    input_buffer[strcspn(input_buffer, "\n")] = '\0';
+
+    if (input_buffer[0] == '\0') {
+      free(input_buffer);
+      continue;
+    }
+
+    if (cmp("mod")) {
+      free(input_buffer);
+      printf("'mod' is the FORTH keyword for the modulus operation. The modulus operation takes the remainder of the top two items of the stack.\n");
+      continue;
+    }
+    if (cmp("quit")) {
+      free(input_buffer);
+      break;
+    }
     free(input_buffer);
   }
 }
