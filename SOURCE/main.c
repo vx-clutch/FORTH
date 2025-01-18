@@ -31,7 +31,7 @@ main(int argc, char **argv) {
   printf(ALTERNATE);
   fflush(stdout);
   printf(HOME);
-  while (1) {
+  for (;;) {
     char *input_buffer = malloc(MAX_BUFFER * sizeof(char));
     if (input_buffer == NULL) {
       fprintf(stderr, "Memory allocation failed\n");
